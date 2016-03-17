@@ -1,12 +1,17 @@
 package com.esigelec.contentresolver;
 
 import android.app.LoaderManager;
+import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Loader;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,13 +40,19 @@ public class Main2Activity extends AppCompatActivity implements LoaderManager.Lo
     };
 
     private EditText editxt_id, editxt_name, editxt_address, editxt_email, editxt_account, editxt_password;
-    private Button btn_modify_password;
+    private Button btn_modify_password, btn_modify_password2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
+
+        // !!! when Data-changed-notification has came, Loader will not recieve this msg, instead, we should register a
+        // ContentObserver to supervise it.
+        Uri uri = Uri.parse(URI_USER);
+        getContentResolver().registerContentObserver(uri, true, new MyOvserver(new UiRefreshHandler()));
 
         getLoaderManager().initLoader(ID_LOADER_USER, null, this);
         //getLoaderManager().initLoader(ID_LOADER_USER_NAME, null, this);
@@ -58,7 +69,30 @@ public class Main2Activity extends AppCompatActivity implements LoaderManager.Lo
             @Override
             public void onClick(View v)
             {
-                //getContentResolver().update();
+                ContentValues values = new ContentValues();
+                values.put(UserContract.Entry.COLUMN_NAME_PASSWORD, "password1");
+                String url_user = URI_USER.replace("#", "2");
+                Uri uri = Uri.parse(url_user);
+                String selection = UserContract.Entry._ID + " LIKE ?";
+                String[] selectionArgs = {String.valueOf(2)};
+                getContentResolver().update(uri, values, selection, selectionArgs);
+            }
+        });
+
+
+        btn_modify_password2 = (Button) findViewById(R.id.btn_modify_password2);
+        btn_modify_password2.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                ContentValues values = new ContentValues();
+                values.put(UserContract.Entry.COLUMN_NAME_PASSWORD, "password2");
+                String url_user = URI_USER.replace("#", "2");
+                Uri uri = Uri.parse(url_user);
+                String selection = UserContract.Entry._ID + " LIKE ?";
+                String[] selectionArgs = {String.valueOf(2)};
+                getContentResolver().update(uri, values, selection, selectionArgs);
             }
         });
 
@@ -86,16 +120,22 @@ public class Main2Activity extends AppCompatActivity implements LoaderManager.Lo
         return null;
     }
 
+    // !!! when Data-changed-notification has came, Loader will not recieve this msg, instead, we should register a
+    // ContentObserver to supervise it.
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data)
     {
         switch (loader.getId())
         {
             case ID_LOADER_USER:
+                Log.i("ID_LOADER_USER", "---->onLoadFinished. ID_LOADER_USER:" + ID_LOADER_USER);
                 refreshUI(data);
                 break;
             case ID_LOADER_USER_NAME:
+                Log.i("ID_LOADER_USER", "---->onLoadFinished. ID_LOADER_USER_NAME:" + ID_LOADER_USER_NAME);
                 break;
+            default:
+                Log.i("ID_LOADER_USER", "---->onLoadFinished. " + loader.getId());
         }
     }
 
@@ -140,5 +180,41 @@ public class Main2Activity extends AppCompatActivity implements LoaderManager.Lo
         User user = new User(user_id, user_name, address, email, account, password);
         cursor.close();
         return user;
+    }
+
+    private class MyOvserver extends ContentObserver
+    {
+        Handler handler;
+
+        public MyOvserver(Handler handler)
+        {
+            super(handler);
+            this.handler = handler;
+        }
+
+        @Override
+        public void onChange(boolean selfChange)
+        {
+            handler.sendEmptyMessage(1);
+        }
+    }
+
+    private class UiRefreshHandler extends Handler
+    {
+        @Override
+        public void handleMessage(Message msg)
+        {
+            super.handleMessage(msg);
+            if (msg.what == 1)
+            {
+                // query new data
+                String url_user = URI_USER.replace("#", "2");
+                Uri uri_user = Uri.parse(url_user);
+                Cursor cursor = getContentResolver().query(uri_user, null, null, null, null);
+                // refresh ui
+                refreshUI(cursor);
+                Log.i("ContentObserver", "---->onChange.");
+            }
+        }
     }
 }

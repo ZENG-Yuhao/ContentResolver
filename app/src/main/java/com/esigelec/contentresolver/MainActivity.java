@@ -1,6 +1,7 @@
 package com.esigelec.contentresolver;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
@@ -15,7 +16,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity
 {
     private ContentResolver contentResolver;
-    private Button btn_get_user, btn_get_user_name;
+    private Button btn_get_user, btn_get_user_name, btn_main2;
     private EditText editxt_id;
     private TextView txt_content;
     private static final String TAG = "tag";
@@ -115,6 +116,17 @@ public class MainActivity extends AppCompatActivity
 
                 txt_content.setText(sb.toString());
 
+            }
+        });
+
+        btn_main2 = (Button) findViewById(R.id.btn_main2);
+        btn_main2.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(MainActivity.this, Main2Activity.class);
+                startActivity(intent);
             }
         });
 
