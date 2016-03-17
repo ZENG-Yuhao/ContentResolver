@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity
     private EditText editxt_id;
     private TextView txt_content;
     private static final String TAG = "tag";
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity
 //                String selection = UserContract.Entry._ID + " LIKE ?";
 //                String[] selectionArgs = {String.valueOf(id)};
                 Uri uri = Uri.parse(UserContract.Entry.SCHEMA + UserContract.Entry.AUTHORITY + "/user/" + id);
-                Log.i(TAG, "--URI-->"+uri.toString());
+                Log.i(TAG, "--URI-->" + uri.toString());
                 Cursor cursor = contentResolver.query(uri, null, null, null, null);
 
                 if (cursor.getCount() <= 0)
@@ -109,7 +110,8 @@ public class MainActivity extends AppCompatActivity
                 String user_name = cursor.getString(num_col_name);
 
                 StringBuilder sb = new StringBuilder();
-                sb.append(user_name);
+                sb.append(user_name + "\n");
+
 
                 txt_content.setText(sb.toString());
 

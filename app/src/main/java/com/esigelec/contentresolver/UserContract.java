@@ -28,23 +28,23 @@ public final class UserContract
         public static final String AUTHORITY = "com.example.enzo.practicedemos.DB.Providers.UserProvider";
 
         // Path
-        public static final String PAHT_ALL_USER = "user";
-        public static final String PAHT_USER = "user/#";
-        public static final String PAHT_USER_NAME = "user/#/name";
-        public static final String PAHT_USER_ADDRESS = "user/#/address";
-        public static final String PAHT_USER_EMAIL = "user/#/email";
-        public static final String PAHT_USER_ACCOUNT = "user/#/account";
-        public static final String PAHT_USER_PASSWORD = "user/#/password";
+        public static final String PATH_ALL_USER = "user";
+        public static final String PATH_USER = "user/#";
+        public static final String PATH_USER_NAME = "user/#/name";
+        public static final String PATH_USER_ADDRESS = "user/#/address";
+        public static final String PATH_USER_EMAIL = "user/#/email";
+        public static final String PATH_USER_ACCOUNT = "user/#/account";
+        public static final String PATH_USER_PASSWORD = "user/#/password";
 
         // Uri
         public static final String SCHEMA = "content://";
-        public static final Uri URI_ALL_USER = Uri.parse(SCHEMA + AUTHORITY + "/" + PAHT_ALL_USER);
-        public static final Uri URI_USER = Uri.parse(SCHEMA + AUTHORITY + "/" + PAHT_USER);
-        public static final Uri URI_USER_NAME = Uri.parse(SCHEMA + AUTHORITY + "/" + PAHT_USER_NAME);
-        public static final Uri URI_USER_ADDRESS = Uri.parse(SCHEMA + AUTHORITY + "/" + PAHT_USER_ADDRESS);
-        public static final Uri URI_USER_EMAIL = Uri.parse(SCHEMA + AUTHORITY + "/" + PAHT_USER_EMAIL);
-        public static final Uri URI_USER_ACCOUNT = Uri.parse(SCHEMA + AUTHORITY + "/" + PAHT_USER_ACCOUNT);
-        public static final Uri URI_USER_PASSWORD = Uri.parse(SCHEMA + AUTHORITY + "/" + PAHT_USER_PASSWORD);
+        public static final Uri URI_ALL_USER = Uri.parse(SCHEMA + AUTHORITY + "/" + PATH_ALL_USER);
+        public static final Uri URI_USER = Uri.parse(SCHEMA + AUTHORITY + "/" + PATH_USER);
+        public static final Uri URI_USER_NAME = Uri.parse(SCHEMA + AUTHORITY + "/" + PATH_USER_NAME);
+        public static final Uri URI_USER_ADDRESS = Uri.parse(SCHEMA + AUTHORITY + "/" + PATH_USER_ADDRESS);
+        public static final Uri URI_USER_EMAIL = Uri.parse(SCHEMA + AUTHORITY + "/" + PATH_USER_EMAIL);
+        public static final Uri URI_USER_ACCOUNT = Uri.parse(SCHEMA + AUTHORITY + "/" + PATH_USER_ACCOUNT);
+        public static final Uri URI_USER_PASSWORD = Uri.parse(SCHEMA + AUTHORITY + "/" + PATH_USER_PASSWORD);
 
     }
 }
