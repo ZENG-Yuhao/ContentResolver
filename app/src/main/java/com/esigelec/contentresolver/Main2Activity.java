@@ -52,7 +52,7 @@ public class Main2Activity extends AppCompatActivity implements LoaderManager.Lo
         // !!! when Data-changed-notification has came, Loader will not recieve this msg, instead, we should register a
         // ContentObserver to supervise it.
         Uri uri = Uri.parse(URI_USER);
-        getContentResolver().registerContentObserver(uri, true, new MyOvserver(new UiRefreshHandler()));
+        getContentResolver().registerContentObserver(uri, true, new MyObserver(new UiRefreshHandler()));
 
         getLoaderManager().initLoader(ID_LOADER_USER, null, this);
         //getLoaderManager().initLoader(ID_LOADER_USER_NAME, null, this);
@@ -182,11 +182,11 @@ public class Main2Activity extends AppCompatActivity implements LoaderManager.Lo
         return user;
     }
 
-    private class MyOvserver extends ContentObserver
+    private class MyObserver extends ContentObserver
     {
         Handler handler;
 
-        public MyOvserver(Handler handler)
+        public MyObserver(Handler handler)
         {
             super(handler);
             this.handler = handler;
